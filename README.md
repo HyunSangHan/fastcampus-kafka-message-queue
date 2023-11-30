@@ -48,7 +48,7 @@ Kafka, Spring Boot, Java 17, Spring Data JPA, Mysql, Gradle, Docker, Docker Comp
 - kafka-cli
 - CMAK
 - kcat
-- kowl
+- Redpanda Console(구 Kowl)
 - kafka-ui
 - spring-kafka
 - spring-cloud-stream
@@ -102,11 +102,13 @@ Kafka, Spring Boot, Java 17, Gradle, Docker, Docker Compose
 ## Execution
 
 ```
-docker-compose up -d
+docker compose up -d
 ```
 
 ## Endpoints
-
+- Tomcat Server
+  - http://localhost:8080
+  - Swagger UI: http://localhost:8080/swagger-ui/index.html
 - Kafka
   - http://localhost:9092, http://localhost:9093, http://localhost:9094
 - Zookeeper
@@ -115,7 +117,7 @@ docker-compose up -d
   - http://localhost:8081
 - CMAK
   - http://localhost:9000
-- redpanda console(구 kowl)
+- Redpanda Console(구 Kowl)
   - http://localhost:8989
 - Mysql
   - http://localhost:3306
