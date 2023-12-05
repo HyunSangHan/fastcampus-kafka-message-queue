@@ -1,29 +1,16 @@
 spring:
-  cloud:
-    function:
-      definition: myProducer;myConsumer;
-    stream:
-      function:
-        bindings:
-          myProducer-out-0: producer-test
-          myConsumer-in-0: consumer-test
-      kafka:
-        binder:
-          brokers: localhost:9092,localhost:9093,localhost:9094
-          auto-create-topics: false
-          required-acks: 0
-          configuration:
-            key.serializer: org.apache.kafka.common.serialization.StringSerializer
-        bindings:
-          consumer-test:
-            consumer:
-              start-offset: latest
-      bindings:
-        consumer-test:
-          group: test-consumer-group
-          destination: my-json-topic
-          consumer:
-            concurrency: 1
-        producer-test:
-          destination: my-json-topic
-          contentType: application/json
+  kafka:
+    bootstrap-servers: localhost:9092,localhost:9093,localhost:9094
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      auto-offset-reset: latest
+      properties:
+        spring.json.trusted.packages: "*"
+        allow.auto.create.topics: false
+    listener:
+      concurrency: 1
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      acks: 1
