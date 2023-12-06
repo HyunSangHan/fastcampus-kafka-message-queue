@@ -16,5 +16,6 @@ public class MySecondConsumer {
     )
     public void accept(ConsumerRecord<String, String> message) {
         System.out.println("[Second Consumer] Message arrived! - " + message.value());
+        System.out.println("[Second Consumer] Offset - " + message.offset() + " / Partition - " + message.partition());
     }
 }
