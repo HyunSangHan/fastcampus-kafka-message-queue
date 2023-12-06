@@ -5,9 +5,6 @@ spring:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       auto-offset-reset: latest
-      properties:
-        spring.json.trusted.packages: "*"
-        allow.auto.create.topics: false
     listener:
       concurrency: 1
     producer:
