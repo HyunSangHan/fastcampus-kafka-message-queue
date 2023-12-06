@@ -1,0 +1,30 @@
+18:{"id":1,"age":18,"name":"Quinn","content":"I'm Quinn, a software engineering student exploring the tech world."}
+17:{"id":2,"age":17,"name":"Peter","content":"Greetings! I'm Peter, a young coder with big dreams."}
+19:{"id":3,"age":19,"name":"Ivy","content":"I am a coding enthusiast with a keen interest in AI."}
+17:{"id":4,"age":17,"name":"Jack","content":"Greetings! I'm Jack, a high school student who loves programming."}
+19:{"id":5,"age":19,"name":"Sara","content":"Hello, I'm Sara. Coding and design are my creative outlets."}
+17:{"id":6,"age":17,"name":"Vince","content":"Hi, I'm Vince. Let's discuss the latest trends in technology."}
+19:{"id":7,"age":19,"name":"Dylan","content":"Nice to meet you! I'm Dylan, a software engineer with a passion for innovation."}
+17:{"id":8,"age":17,"name":"David","content":"Hey there! I enjoy playing video games in my free time."}
+18:{"id":9,"age":18,"name":"Ryan","content":"Nice to meet you! I'm Ryan, passionate about software development."}
+19:{"id":10,"age":19,"name":"Ada","content":"Hello world! I'm Ada, a computer science major with a curiosity for AI."}
+17:{"id":11,"age":17,"name":"Mia","content":"Hey, I'm Mia. Let's talk about technology and innovation."}
+19:{"id":12,"age":19,"name":"Uma","content":"Hey! I'm Uma, a software developer interested in AI and machine learning."}
+17:{"id":13,"age":17,"name":"Alice","content":"Hi, my name is Alice."}
+18:{"id":14,"age":18,"name":"Karen","content":"Hello world! I'm Karen, a computer science major."}
+19:{"id":15,"age":19,"name":"Olivia","content":"Hi, I'm Olivia. I love building software that makes a difference."}
+17:{"id":16,"age":17,"name":"Henry","content":"Aspiring software developer here! Let's connect."}
+18:{"id":17,"age":18,"name":"Cara","content":"Hi, I'm Cara. Let's code together and create something amazing."}
+19:{"id":18,"age":19,"name":"Frank","content":"Nice to meet you! I specialize in web development."}
+17:{"id":19,"age":17,"name":"Yara","content":"Hey there! I'm Yara, a young coder passionate about innovation."}
+18:{"id":20,"age":18,"name":"Wendy","content":"I'm Wendy, a coding enthusiast who enjoys building cool projects."}
+19:{"id":21,"age":19,"name":"Leo","content":"I enjoy solving complex problems through coding."}
+17:{"id":22,"age":17,"name":"Ben","content":"I'm Ben, a high school student interested in programming and technology."}
+18:{"id":23,"age":18,"name":"Nathan","content":"Coding is my passion, and I'm always eager to learn new things."}
+19:{"id":24,"age":19,"name":"Travis","content":"I am a software engineer."}
+17:{"id":25,"age":17,"name":"Grace","content":"Hi, I'm Grace. I love reading books and learning new things."}
+18:{"id":26,"age":18,"name":"Zack","content":"I'm Zack, a software engineering student with a love for coding challenges."}
+19:{"id":27,"age":19,"name":"Tom","content":"I'm Tom, a computer science enthusiast with a love for algorithms."}
+17:{"id":28,"age":17,"name":"Ivy","content":"I am a coding enthusiast with a keen interest in AI."}
+18:{"id":29,"age":18,"name":"Xavier","content":"Greetings! I'm Xavier, exploring the world of software engineering."}
+19:{"id":30,"age":19,"name":"Eva","content":"I am passionate about creating software applications."}
