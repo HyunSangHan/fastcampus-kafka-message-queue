@@ -29,10 +29,9 @@ public class MyConsumer {
         acknowledgment.acknowledge();
     }
 
-    private synchronized void printPayloadIfFirstMessage(MyMessage myMessage) {
-        if (idHistoryMap.get(String.valueOf(myMessage.getId())) == null) {
+    private void printPayloadIfFirstMessage(MyMessage myMessage) {
+        if (idHistoryMap.putIfAbsent(String.valueOf(myMessage.getId()), 1) == null) {
             System.out.println("[Main Consumer] Message arrived! - " + myMessage); // Exactly Once 실행되어야 하는 로직으로 가정
-            idHistoryMap.put(String.valueOf(myMessage.getId()), 1);
         } else {
             System.out.println("[Main Consumer] Duplicate! (" + myMessage.getId() + ")");
         }
