@@ -8,6 +8,8 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static com.fastcampus.kafkahandson.model.Topic.MY_JSON_TOPIC;
 
@@ -16,22 +18,29 @@ public class MyBatchConsumer {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
+    private final ExecutorService executorService = Executors.newFixedThreadPool(10);
+
     @KafkaListener(
         topics = { MY_JSON_TOPIC },
         groupId = "batch-test-consumer-group", // MyConsumer의 groupId와 반드시 달라야 함!
         containerFactory = "batchKafkaListenerContainerFactory",
-        concurrency = "6"
+        concurrency = "1"
     )
     public void listen(List<ConsumerRecord<String, String>> messages) {
         System.out.println("[Batch Consumer] Batch message arrived! - count " + messages.size());
-        messages.forEach(message -> {
+        messages.forEach(message -> executorService.submit(() -> {
             MyMessage myMessage;
             try {
                 myMessage = objectMapper.readValue(message.value(), MyMessage.class);
             } catch (JsonProcessingException e) {
                 throw new RuntimeException(e);
             }
-            System.out.println("ㄴ [Batch Consumer(" + Thread.currentThread().getId() + ")] " + "[Partition - " + message.partition() + " / Offset - " + message.offset() + "] " + myMessage);
-        });
+            try {
+                Thread.sleep(1000);
+                System.out.println("ㄴ [Batch Consumer(" + Thread.currentThread().getId() + ")] " + "[Partition - " + message.partition() + " / Offset - " + message.offset() + "] " + myMessage);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }));
     }
 }
