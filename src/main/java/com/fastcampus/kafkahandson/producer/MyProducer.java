@@ -2,6 +2,8 @@ package com.fastcampus.kafkahandson.producer;
 
 import com.fastcampus.kafkahandson.model.MyMessage;
 import com.fastcampus.kafkahandson.model.Topic;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
@@ -10,9 +12,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class MyProducer {
 
-    private final KafkaTemplate<String, MyMessage> kafkaTemplate;
+    ObjectMapper objectMapper = new ObjectMapper();
 
-    public void sendMessage(MyMessage myMessage) {
-        kafkaTemplate.send(Topic.MY_JSON_TOPIC, String.valueOf(myMessage.getAge()), myMessage);
+    private final KafkaTemplate<String, String> kafkaTemplate;
+
+    public void sendMessage(MyMessage message) throws JsonProcessingException {
+        kafkaTemplate.send(
+            Topic.MY_JSON_TOPIC,
+            String.valueOf(message.getAge()),
+            objectMapper.writeValueAsString(message)
+        );
     }
 }
