@@ -21,7 +21,8 @@ public class MyConsumer {
 
     @KafkaListener(
         topics = { MY_JSON_TOPIC },
-        groupId = "test-consumer-group"
+        groupId = "test-consumer-group",
+        concurrency = "1"
     )
     public void listen(ConsumerRecord<String, String> message, Acknowledgment acknowledgment) throws JsonProcessingException {
         MyMessage myMessage = objectMapper.readValue(message.value(), MyMessage.class);

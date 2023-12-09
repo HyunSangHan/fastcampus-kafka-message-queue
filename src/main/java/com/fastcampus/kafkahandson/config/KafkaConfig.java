@@ -47,8 +47,6 @@ public class KafkaConfig {
         ConcurrentKafkaListenerContainerFactory<String, Object> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory);
         factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL);
-        factory.setConcurrency(1);
-
         return factory;
     }
 
@@ -72,7 +70,6 @@ public class KafkaConfig {
         ConcurrentKafkaListenerContainerFactory<String, Object> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(batchConsumerFactory);
         factory.setBatchListener(true);
-        factory.setConcurrency(1);
         factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.BATCH);
         return factory;
     }

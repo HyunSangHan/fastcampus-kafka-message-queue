@@ -19,7 +19,8 @@ public class MyBatchConsumer {
     @KafkaListener(
         topics = { MY_JSON_TOPIC },
         groupId = "batch-test-consumer-group", // MyConsumer의 groupId와 반드시 달라야 함!
-        containerFactory = "batchKafkaListenerContainerFactory"
+        containerFactory = "batchKafkaListenerContainerFactory",
+        concurrency = "1"
     )
     public void listen(List<ConsumerRecord<String, String>> messages) {
         System.out.println("[Batch Consumer] Batch message arrived! - count " + messages.size());
