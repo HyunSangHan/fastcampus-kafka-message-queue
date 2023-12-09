@@ -13,7 +13,8 @@ import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.*;
 import org.springframework.kafka.listener.ContainerProperties;
 import org.springframework.kafka.listener.DefaultErrorHandler;
-import org.springframework.util.backoff.FixedBackOff;
+import org.springframework.util.backoff.BackOff;
+import org.springframework.util.backoff.ExponentialBackOff;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -48,7 +49,7 @@ public class KafkaConfig {
     ) {
         ConcurrentKafkaListenerContainerFactory<String, Object> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory);
-        DefaultErrorHandler errorHandler = new DefaultErrorHandler(new FixedBackOff(1000L, 2L));
+        DefaultErrorHandler errorHandler = new DefaultErrorHandler(generateBackOff());
         errorHandler.addNotRetryableExceptions(IllegalArgumentException.class);
         factory.setCommonErrorHandler(errorHandler);
         factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL);
@@ -95,5 +96,12 @@ public class KafkaConfig {
     @Primary
     public KafkaTemplate<String, ?> kafkaTemplate(KafkaProperties kafkaProperties) {
         return new KafkaTemplate<>(producerFactory(kafkaProperties));
+    }
+
+    private BackOff generateBackOff() {
+        ExponentialBackOff backOff = new ExponentialBackOff(1000, 2);
+//        backOff.setMaxAttempts(1);
+        backOff.setMaxElapsedTime(10000);
+        return backOff;
     }
 }
