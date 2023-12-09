@@ -18,8 +18,9 @@ public class MyCdcApplicationEventListener {
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     @Async
     public void transactionalEventListenerAfterCommit(MyCdcApplicationEvent event) throws JsonProcessingException {
-        myCdcProducer.sendMessage(
-            MyModelConverter.toMessage(event.getId(), event.getMyModel(), event.getOperationType())
-        );
+        throw new RuntimeException("Something happened!");
+//        myCdcProducer.sendMessage(
+//            MyModelConverter.toMessage(event.getId(), event.getMyModel(), event.getOperationType())
+//        );
     }
 }
