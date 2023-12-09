@@ -32,9 +32,9 @@ public class MyConsumer {
 
     private void printPayloadIfFirstMessage(MyMessage myMessage) {
         if (idHistoryMap.putIfAbsent(String.valueOf(myMessage.getId()), 1) == null) {
-            System.out.println("[Main Consumer] Message arrived! - " + myMessage); // Exactly Once 실행되어야 하는 로직으로 가정
+            System.out.println("[Main Consumer(" + Thread.currentThread().getId() + ")] Message arrived! - " + myMessage); // Exactly Once 실행되어야 하는 로직으로 가정
         } else {
-            System.out.println("[Main Consumer] Duplicate! (" + myMessage.getId() + ")");
+            System.out.println("[Main Consumer(" + Thread.currentThread().getId() + ")] Duplicate! (" + myMessage.getId() + ")");
         }
     }
 }

@@ -20,7 +20,7 @@ public class MyBatchConsumer {
         topics = { MY_JSON_TOPIC },
         groupId = "batch-test-consumer-group", // MyConsumer의 groupId와 반드시 달라야 함!
         containerFactory = "batchKafkaListenerContainerFactory",
-        concurrency = "1"
+        concurrency = "6"
     )
     public void listen(List<ConsumerRecord<String, String>> messages) {
         System.out.println("[Batch Consumer] Batch message arrived! - count " + messages.size());
@@ -31,7 +31,7 @@ public class MyBatchConsumer {
             } catch (JsonProcessingException e) {
                 throw new RuntimeException(e);
             }
-            System.out.println("ㄴ [Batch Consumer] Value - " + myMessage + " / Offset - " + message.offset() + " / Partition - " + message.partition());
+            System.out.println("ㄴ [Batch Consumer(" + Thread.currentThread().getId() + ")] " + "[Partition - " + message.partition() + " / Offset - " + message.offset() + "] " + myMessage);
         });
     }
 }
