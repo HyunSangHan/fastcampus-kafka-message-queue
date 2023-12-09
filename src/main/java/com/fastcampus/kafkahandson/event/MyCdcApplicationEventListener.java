@@ -15,12 +15,12 @@ public class MyCdcApplicationEventListener {
 
     private final MyCdcProducer myCdcProducer;
 
+    /* 미사용! */
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     @Async
     public void transactionalEventListenerAfterCommit(MyCdcApplicationEvent event) throws JsonProcessingException {
-        throw new RuntimeException("Something happened!");
-//        myCdcProducer.sendMessage(
-//            MyModelConverter.toMessage(event.getId(), event.getMyModel(), event.getOperationType())
-//        );
+        myCdcProducer.sendMessage(
+            MyModelConverter.toMessage(event.getId(), event.getMyModel(), event.getOperationType())
+        );
     }
 }
