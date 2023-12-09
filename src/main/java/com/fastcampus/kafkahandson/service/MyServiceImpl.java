@@ -50,7 +50,8 @@ public class MyServiceImpl implements MyService {
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Error processing JSON for sendMessage", e);
         }
-        return resultModel;
+        throw new RuntimeException("Something happened!");
+//        return resultModel;
     }
 
     @Override
