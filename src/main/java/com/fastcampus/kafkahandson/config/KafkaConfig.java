@@ -1,6 +1,8 @@
 package com.fastcampus.kafkahandson.config;
 
+import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
@@ -11,14 +13,15 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.*;
-import org.springframework.kafka.listener.CommonContainerStoppingErrorHandler;
-import org.springframework.kafka.listener.ContainerProperties;
-import org.springframework.kafka.listener.DefaultErrorHandler;
+import org.springframework.kafka.listener.*;
 import org.springframework.util.backoff.BackOff;
 import org.springframework.util.backoff.ExponentialBackOff;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Configuration
 @EnableKafka
@@ -45,12 +48,38 @@ public class KafkaConfig {
 
     @Bean
     @Primary
+    CommonErrorHandler errorHandler() {
+        CommonContainerStoppingErrorHandler cseh = new CommonContainerStoppingErrorHandler();
+        AtomicReference<Consumer<? ,?>> consumer2 = new AtomicReference<>();
+        AtomicReference<MessageListenerContainer> container2 = new AtomicReference<>();
+
+        return new DefaultErrorHandler((rec, ex) -> {
+            cseh.handleRemaining(ex, Collections.singletonList(rec), consumer2.get(), container2.get());
+        }, generateBackOff()) {
+
+            @Override
+            public void handleRemaining(
+                    Exception thrownException,
+                    List<ConsumerRecord<?, ?>> records,
+                    Consumer<?, ?> consumer,
+                    MessageListenerContainer container
+            ) {
+                consumer2.set(consumer);
+                container2.set(container);
+                super.handleRemaining(thrownException, records, consumer, container);
+            }
+        };
+    }
+
+    @Bean
+    @Primary
     public ConcurrentKafkaListenerContainerFactory<String, Object> kafkaListenerContainerFactory(
-        ConsumerFactory<String, Object> consumerFactory
+            ConsumerFactory<String, Object> consumerFactory,
+            CommonErrorHandler errorHandler
     ) {
         ConcurrentKafkaListenerContainerFactory<String, Object> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory);
-        factory.setCommonErrorHandler(new CommonContainerStoppingErrorHandler());
+        factory.setCommonErrorHandler(errorHandler);
         factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL);
         return factory;
     }
