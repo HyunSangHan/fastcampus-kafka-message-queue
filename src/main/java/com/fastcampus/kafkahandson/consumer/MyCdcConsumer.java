@@ -28,7 +28,7 @@ public class MyCdcConsumer {
         MyCdcMessage myCdcMessage = objectMapper.readValue(message.value(), MyCdcMessage.class);
         System.out.println(retryPrint + "[Cdc Consumer] " + myCdcMessage.getOperationType() + " Message arrived! (id: " + myCdcMessage.getId() + ") - " + myCdcMessage.getPayload() + " / time: " + LocalDateTime.now() + ")");
         retryCount++;
-        throw new RuntimeException("Something happened!");
+        throw new IllegalArgumentException("Something happened!");
 //        acknowledgment.acknowledge();
     }
 }

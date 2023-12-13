@@ -53,7 +53,7 @@ public class KafkaConfig {
         AtomicReference<Consumer<? ,?>> consumer2 = new AtomicReference<>();
         AtomicReference<MessageListenerContainer> container2 = new AtomicReference<>();
 
-        return new DefaultErrorHandler((rec, ex) -> {
+        DefaultErrorHandler errorHandler = new DefaultErrorHandler((rec, ex) -> {
             cseh.handleRemaining(ex, Collections.singletonList(rec), consumer2.get(), container2.get());
         }, generateBackOff()) {
 
@@ -69,6 +69,8 @@ public class KafkaConfig {
                 super.handleRemaining(thrownException, records, consumer, container);
             }
         };
+        errorHandler.addNotRetryableExceptions(IllegalArgumentException.class);
+        return errorHandler;
     }
 
     @Bean
