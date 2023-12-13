@@ -48,40 +48,13 @@ public class KafkaConfig {
 
     @Bean
     @Primary
-    CommonErrorHandler errorHandler() {
-        CommonContainerStoppingErrorHandler cseh = new CommonContainerStoppingErrorHandler();
-        AtomicReference<Consumer<? ,?>> consumer2 = new AtomicReference<>();
-        AtomicReference<MessageListenerContainer> container2 = new AtomicReference<>();
-
-        DefaultErrorHandler errorHandler = new DefaultErrorHandler((rec, ex) -> {
-            cseh.handleRemaining(ex, Collections.singletonList(rec), consumer2.get(), container2.get());
-        }, generateBackOff()) {
-
-            @Override
-            public void handleRemaining(
-                    Exception thrownException,
-                    List<ConsumerRecord<?, ?>> records,
-                    Consumer<?, ?> consumer,
-                    MessageListenerContainer container
-            ) {
-                consumer2.set(consumer);
-                container2.set(container);
-                super.handleRemaining(thrownException, records, consumer, container);
-            }
-        };
-        errorHandler.addNotRetryableExceptions(IllegalArgumentException.class);
-        return errorHandler;
-    }
-
-    @Bean
-    @Primary
     public ConcurrentKafkaListenerContainerFactory<String, Object> kafkaListenerContainerFactory(
             ConsumerFactory<String, Object> consumerFactory,
-            CommonErrorHandler errorHandler
+            KafkaTemplate<String, Object> kafkaTemplate
     ) {
         ConcurrentKafkaListenerContainerFactory<String, Object> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory);
-        factory.setCommonErrorHandler(errorHandler);
+        factory.setCommonErrorHandler(new DefaultErrorHandler(new DeadLetterPublishingRecoverer(kafkaTemplate)));
         factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL);
         return factory;
     }
