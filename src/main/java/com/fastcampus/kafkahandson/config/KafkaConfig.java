@@ -57,7 +57,8 @@ public class KafkaConfig {
         ConcurrentKafkaListenerContainerFactory<String, Object> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory);
         factory.setCommonErrorHandler(new DefaultErrorHandler((record, exception) -> {
-            kafkaTemplate.send(MY_CUSTOM_CDC_TOPIC_DLT, (String) record.key(), record.value());
+//            kafkaTemplate.send(MY_CUSTOM_CDC_TOPIC_DLT, (String) record.key(), record.value());
+            System.out.println("Give up! - " + exception.getMessage());
         }, generateBackOff()));
         factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL);
         return factory;
