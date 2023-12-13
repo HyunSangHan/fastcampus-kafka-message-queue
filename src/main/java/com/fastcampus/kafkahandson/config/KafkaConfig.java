@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static com.fastcampus.kafkahandson.model.Topic.MY_CUSTOM_CDC_TOPIC_DLT;
+
 @Configuration
 @EnableKafka
 public class KafkaConfig {
@@ -54,7 +56,9 @@ public class KafkaConfig {
     ) {
         ConcurrentKafkaListenerContainerFactory<String, Object> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory);
-        factory.setCommonErrorHandler(new DefaultErrorHandler(new DeadLetterPublishingRecoverer(kafkaTemplate), generateBackOff()));
+        factory.setCommonErrorHandler(new DefaultErrorHandler((record, exception) -> {
+            kafkaTemplate.send(MY_CUSTOM_CDC_TOPIC_DLT, (String) record.key(), record.value());
+        }, generateBackOff()));
         factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL);
         return factory;
     }
